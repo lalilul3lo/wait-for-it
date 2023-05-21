@@ -13,14 +13,16 @@ fn main() {
         .arg(
             Arg::new("host")
                 .long("host")
-                .required(false)
+                .required_unless_present("path")
+                .conflicts_with("path")
                 .help("Host or IP being probed."),
         )
         .arg(
             Arg::new("port")
                 .long("port")
                 .short('p')
-                .required(false)
+                .required_unless_present("path")
+                .conflicts_with("path")
                 .help("TCP port being probed."),
         )
         .arg(
@@ -34,9 +36,19 @@ fn main() {
 
     let matches = cmd.get_matches();
 
-    let host = matches.get_one::<String>("host").unwrap();
-
-    let port = matches.get_one::<String>("port").unwrap();
+    let (host, port) = if let Some(path) = matches.get_one::<String>("path") {
+        let parts: Vec<&str> = path.split(':').collect();
+        if parts.len() != 2 {
+            println!("Invalid path format. Please provide Host and Port separated by a colon (e.g., localhost.com:80).");
+            exit(1);
+        }
+        (parts[0].to_string(), parts[1].to_string())
+    } else {
+        (
+            matches.get_one::<String>("host").unwrap().clone(),
+            matches.get_one::<String>("port").unwrap().clone(),
+        )
+    };
 
     let timeout: u64 = matches
         .get_one::<String>("timeout")
