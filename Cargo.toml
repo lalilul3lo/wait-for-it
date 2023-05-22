@@ -1,11 +1,15 @@
 [package]
 name = "wait_for_it"
 version = "0.1.0"
+authors = ["Samuel Joli <samuel.joli.ftn@gmail.com>"]
+description = "Utility for waiting for the availability of a TCP host and port."
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-assert_cmd = "2.0.11"
 clap = { version = "4.3.0", features = ["derive", "cargo"] }
 tokio = { version = "1.0", features = ["full"] }
+
+[dev-dependencies]
+assert_cmd = "2.0.11"

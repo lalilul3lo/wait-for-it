@@ -44,7 +44,7 @@ async fn test_host_and_port_as_single_path() {
                                            //
     let mut cmd = Command::cargo_bin("wait_for_it").unwrap();
 
-    let path = format!("{}:{}", addr.ip().to_string(), addr.port().to_string());
+    let path = format!("{}:{}", addr.ip(), addr.port());
 
     cmd.arg(path).arg("--timeout").arg("5");
 
